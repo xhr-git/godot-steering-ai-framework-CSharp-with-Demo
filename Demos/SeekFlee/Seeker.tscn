@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Demos/Utils/PlayerOutlook.cs" type="Script" id=1]
+[ext_resource path="res://Demos/SeekFlee/Seeker.cs" type="Script" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 13.501
+
+[node name="Seeker" type="KinematicBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+script = ExtResource( 1 )
+InnerColor = Color( 0.890196, 0.411765, 0.337255, 1 )
+OuterColor = Color( 1, 0.709804, 0.439216, 1 )

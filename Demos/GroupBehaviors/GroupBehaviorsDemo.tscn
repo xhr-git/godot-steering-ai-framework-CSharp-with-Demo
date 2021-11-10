@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Demos/GroupBehaviors/GrpSpawner.cs" type="Script" id=1]
+[ext_resource path="res://Demos/Utils/Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Demos/GroupBehaviors/Member.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Demos/Utils/SceneDesc.tscn" type="PackedScene" id=4]
+
+[node name="GroupBehaviorsDemo" type="Node"]
+
+[node name="Background" parent="." instance=ExtResource( 2 )]
+
+[node name="GrpSpawner" type="Node2D" parent="."]
+position = Vector2( 960, 540 )
+script = ExtResource( 1 )
+linear_speed_max = 1800.0
+linear_accel_max = 1200.0
+proximity_radius = 250.0
+separation_decay_coefficient = 121500.0
+cohesion_strength = 0.2
+separation_strength = 6.6
+memberScene = ExtResource( 3 )
+
+[node name="SceneDesc" parent="." instance=ExtResource( 4 )]
+modulate = Color( 1, 1, 1, 0.564706 )
+margin_bottom = 175.0
+Description = "Group Behavior Demo
+Each of the \"Agents\" are both attempting to stay separated from each other but within reach of their nearest group's center of mass. Click on agent to see it's proximity."

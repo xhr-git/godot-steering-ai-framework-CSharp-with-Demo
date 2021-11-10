@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Demos/Arrive/ArriveDemo.cs" type="Script" id=1]
+[ext_resource path="res://Demos/Utils/Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Demos/Utils/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Demos/Utils/SceneDesc.tscn" type="PackedScene" id=4]
+
+[node name="ArriveDemo" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Background" parent="." instance=ExtResource( 2 )]
+
+[node name="TargetDrawer" type="Node2D" parent="."]
+
+[node name="Arriver2d" parent="." instance=ExtResource( 3 )]
+
+[node name="SceneDesc" parent="." instance=ExtResource( 4 )]
+Description = "Arrive Demo
+Mouse click to make the [color=lime]green \"Player\"[/color] move to the [color=fuchsia]purple target[/color]"
