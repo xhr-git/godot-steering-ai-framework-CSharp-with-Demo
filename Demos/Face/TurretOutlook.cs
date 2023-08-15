@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TurretOutlook : CollisionShape2D
+public partial class TurretOutlook : CollisionShape2D
 {
     [Export] private Color inner_color = new Color(0.890196f, 0.411765f, 0.337255f);
     [Export] private Color outer_color = new Color(1, 0.709804f, 0.439216f);

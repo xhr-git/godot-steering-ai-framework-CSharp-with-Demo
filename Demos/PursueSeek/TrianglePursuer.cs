@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class TrianglePursuer : TriangleBoat
+public partial class TrianglePursuer : TriangleBoat
 {
     [Export] private bool use_seek = false;
     [Export] private float predict_time = 1;
@@ -23,7 +23,7 @@ public class TrianglePursuer : TriangleBoat
         base._Ready();
         agent = new GSAIKinematicBody2DAgent(this);
         accel = new GSAITargetAcceleration();
-        player_agent = (Owner.FindNode("TrianglePlayer", true, false) as TrianglePlayer).agent;
+        player_agent = Owner.GetNode<TrianglePlayer>("TrianglePlayer").agent;
         agent.CalculateVelocities = false;
 
         GSAISteeringBehavior behavior;
@@ -33,21 +33,22 @@ public class TrianglePursuer : TriangleBoat
             behavior = new GSAIPursue(agent, player_agent, predict_time);
 
         var orient_behavior = new GSAIFace(agent, _direction_face);
-        orient_behavior.AlignmentTolerance = Mathf.Deg2Rad(5);
-        orient_behavior.DecelerationRadius = Mathf.Deg2Rad(30);
+        orient_behavior.AlignmentTolerance = Mathf.DegToRad(5);
+        orient_behavior.DecelerationRadius = Mathf.DegToRad(30);
 
         _blend = new GSAIBlend(agent);
         _blend.Add(behavior, 1);
         _blend.Add(orient_behavior, 1);
 
-        agent.AngularAccelerationMax = Mathf.Deg2Rad(1080);
-        agent.AngularSpeedMax = Mathf.Deg2Rad(360);
+        agent.AngularAccelerationMax = Mathf.DegToRad(1080);
+        agent.AngularSpeedMax = Mathf.DegToRad(360);
         agent.LinearAccelerationMax = linear_accel_max;
         agent.LinearSpeedMax = linear_speed_max;
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double _delta)
     {
+        float delta = (float) _delta;
         _direction_face.Position = agent.Position + accel.Linear.Normalized();
 
         _blend.CalculateSteering(accel);
@@ -57,13 +58,13 @@ public class TrianglePursuer : TriangleBoat
 
         Rotation += agent.AngularVelocity * delta;
 
-        var linear_velocity = GSAIUtils.ToVector2(agent.LinearVelocity) +
+        Velocity = GSAIUtils.ToVector2(agent.LinearVelocity) +
             (GSAIUtils.AngleToVector2(Rotation) * -agent.LinearAccelerationMax * delta);
 
-        linear_velocity = linear_velocity.Clamped(agent.LinearSpeedMax);
-        linear_velocity = linear_velocity.LinearInterpolate(Vector2.Zero, _linear_drag_coefficient);
+        Velocity = Velocity.LimitLength(agent.LinearSpeedMax);
+        Velocity = Velocity.Lerp(Vector2.Zero, _linear_drag_coefficient);
 
-        linear_velocity = MoveAndSlide(linear_velocity);
-        agent.LinearVelocity = GSAIUtils.ToVector3(linear_velocity);
+        MoveAndSlide();
+        agent.LinearVelocity = GSAIUtils.ToVector3(Velocity);
     }
 }

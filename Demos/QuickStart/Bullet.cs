@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Bullet : KinematicBody2D
+public partial class Bullet : CharacterBody2D
 {
     [Export] private Color inner_color = new Color("3ca370");
     [Export] private Color outer_color = new Color("8fde5d");
@@ -21,18 +21,18 @@ public class Bullet : KinematicBody2D
     public override void _Ready()
     {
         var timer = GetNode<Timer>("Timer");
-        timer.Connect("timeout", this, "ClearSelf");
+        timer.Connect("timeout", new Callable(this, "ClearSelf"));
         timer.Start();
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
-        var collision = MoveAndCollide(velocity * delta);
+        var collision = MoveAndCollide(velocity * (float) delta);
         if (collision is null)
             return;
         GetNode<Timer>("Timer").Stop();
         ClearSelf();
-        collision.Collider.CallDeferred("Damage", 1);
+        collision.GetCollider().CallDeferred("Damage", 1);
     }
 
     public void Start(Vector2 dir)

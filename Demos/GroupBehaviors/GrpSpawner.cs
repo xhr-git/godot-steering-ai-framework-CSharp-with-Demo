@@ -3,7 +3,7 @@ using System;
 using GodotSteeringAI;
 using System.Collections.Generic;
 
-public class GrpSpawner : Node2D
+public partial class GrpSpawner : Node2D
 {
     [Export] private float linear_speed_max = 600;
     [Export] private float linear_accel_max = 40;
@@ -15,7 +15,7 @@ public class GrpSpawner : Node2D
 
     [Export] private PackedScene memberScene;
 
-    private void follower_input_event(Viewport node, InputEvent input, int shape, Member follower)
+    private void follower_input_event(InputEvent input, Member follower)
     {
         if (input.IsActionPressed("click"))
         {
@@ -24,11 +24,11 @@ public class GrpSpawner : Node2D
                 if (other.draw_proximity)
                 {
                     other.draw_proximity = false;
-                    other.Update();
+                    other.QueueRedraw();
                 }
             }
             follower.draw_proximity = true;
-            follower.Update();
+            follower.QueueRedraw();
             MoveChild(follower, GetChildCount());
         }
     }
@@ -39,7 +39,7 @@ public class GrpSpawner : Node2D
 
         for (int i = 0; i < 20; i++)
         {
-            var follower = memberScene.Instance() as Member;
+            var follower = memberScene.Instantiate() as Member;
             AddChild(follower);
             follower.Position += new Vector2(Member.GetRand(-60, 60), Member.GetRand(-60, 60));
             follower.Setup(linear_speed_max, linear_accel_max, proximity_radius,
@@ -48,11 +48,9 @@ public class GrpSpawner : Node2D
             if (i == 0 && show_proximity_radius)
             {
                 follower.draw_proximity = true;
-                follower.Update();
+                follower.QueueRedraw();
             }
             follower.proximity.Agents = followers;
-            follower.Connect("input_event", this, nameof(follower_input_event),
-                new Godot.Collections.Array { follower });
         }
     }
 

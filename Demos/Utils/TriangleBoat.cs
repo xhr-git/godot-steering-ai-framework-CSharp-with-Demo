@@ -2,7 +2,7 @@ using Godot;
 using System;
 using DemoUtils;
 
-public class TriangleBoat : KinematicBody2D
+public partial class TriangleBoat : CharacterBody2D
 {
     [Export] private Color inner_color = new Color(0.4f, 0.501961f, 1f);
     [Export] private Color outer_color = new Color(0.4f, 0.501961f, 1f);
@@ -12,6 +12,6 @@ public class TriangleBoat : KinematicBody2D
         var line = GetNode<TriangleBoatOutlook>("TriangleBoatOutlook");
         line.SetInnerColor(inner_color);
         line.DefaultColor = outer_color;
-        line.Update();
+        line.QueueRedraw();
     }
 }

@@ -1,0 +1,17 @@
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.csproj.AssemblyReference.cache
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.GeneratedMSBuildEditorConfig.editorconfig
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.AssemblyInfoInputs.cache
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.AssemblyInfo.cs
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.csproj.CoreCompileInputs.cache
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\bin\Debug\GodotSteeringAI.deps.json
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\bin\Debug\GodotSteeringAI.runtimeconfig.json
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\bin\Debug\GodotSteeringAI.dll
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\bin\Debug\GodotSteeringAI.pdb
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\bin\Debug\GodotSharp.dll
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.csproj.CopyComplete
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.dll
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\refint\GodotSteeringAI.dll
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.pdb
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\GodotSteeringAI.genruntimeconfig.cache
+E:\Documents\Godot\godot-steering-ai-framework-csharp\.godot\mono\temp\obj\Debug\ref\GodotSteeringAI.dll

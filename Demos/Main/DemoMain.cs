@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class DemoMain : Node
+public partial class DemoMain : Node
 {
 	private ItemList demoList;
 
@@ -27,10 +27,10 @@ public class DemoMain : Node
 	private void InitHideShowList()
 	{
 		goBackBtn = GetNode<Button>("ButtonGoBack");
-		goBackBtn.Connect("pressed", this, nameof(_on_ButtonGoBack_pressed));
+		goBackBtn.Connect("pressed", new Callable(this, nameof(_on_ButtonGoBack_pressed)));
 
 		loadBtn = GetNode<Button>("DemoPickerUI/VBoxContainer/Button");
-		loadBtn.Connect("pressed", this, nameof(_on_DemoPickerUI_demo_requested));
+		loadBtn.Connect("pressed", new Callable(this, nameof(_on_DemoPickerUI_demo_requested)));
 
 		hidenList = new List<CanvasItem>();
 		hidenList.Add(GetNode<CanvasItem>("Background"));
@@ -40,9 +40,10 @@ public class DemoMain : Node
 	private void InitDemoList()
 	{
 		demoList = GetNode<ItemList>("DemoPickerUI/VBoxContainer/ItemList");
-		demoList.Connect("item_selected", this, nameof(_on_item_selected));
-		demoList.Connect("item_activated", this, nameof(_on_ItemList_item_activated));
+		demoList.Connect("item_selected", new Callable(this, nameof(_on_item_selected)));
+		demoList.Connect("item_activated", new Callable(this, nameof(_on_ItemList_item_activated)));
 
+		/*
 		demoPaths = _find_demos("res://Demos/", new string[] { "*Demo.tscn" }, true);
 		foreach (var demo in demoPaths)
 		{
@@ -50,13 +51,14 @@ public class DemoMain : Node
 			var name = tmp[tmp.Length - 1].Replace("Demo.tscn", "");
 			demoList.AddItem(name);
 		}
-		demoList.Select(0);
+		demoList.Select(0); */
 	}
 
+	/*
 	private List<string> _find_demos(string root, string[] patterns, bool is_recursive = false, bool do_skip_hidden = true)
 	{
 		var paths = new List<string>();
-		var directory = new Directory();
+		var directory = new DirAccess();
 
 		if (!directory.DirExists(root))
 		{
@@ -92,7 +94,7 @@ public class DemoMain : Node
 		}
 		directory.ListDirEnd();
 		return paths;
-	}
+	} */
 
 	private void _on_ButtonGoBack_pressed()
 	{
@@ -124,7 +126,7 @@ public class DemoMain : Node
 		var demo = GD.Load(demoPaths[demoItemIndex]) as PackedScene;
 		if (demo is null)
 			return;
-		demo_player.AddChild(demo.Instance());
+		demo_player.AddChild(demo.Instantiate());
 		goBackBtn.Show();
 	}
 

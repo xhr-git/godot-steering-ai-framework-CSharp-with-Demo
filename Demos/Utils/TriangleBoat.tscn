@@ -3,14 +3,14 @@
 [ext_resource path="res://Demos/Utils/TriangleBoatOutlook.cs" type="Script" id=1]
 [ext_resource path="res://Demos/Utils/TriangleBoat.cs" type="Script" id=2]
 
-[node name="TriangleBoat" type="KinematicBody2D"]
+[node name="TriangleBoat" type="CharacterBody2D"]
 script = ExtResource( 2 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( 0, -53, -26.5, 18.5, 26.5, 18.5 )
+polygon = PackedVector2Array( 0, -53, -26.5, 18.5, 26.5, 18.5 )
 
 [node name="TriangleBoatOutlook" type="Line2D" parent="."]
-points = PoolVector2Array( 0, 16, -24, 16, 0, -48, 24, 16, 0, 16 )
+points = PackedVector2Array( 0, 16, -24, 16, 0, -48, 24, 16, 0, 16 )
 default_color = Color( 0.4, 0.501961, 1, 1 )
 joint_mode = 2
 antialiased = true

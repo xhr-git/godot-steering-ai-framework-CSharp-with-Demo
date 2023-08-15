@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using GodotSteeringAI;
 
-public class QuickAgent : TriangleBoat
+public partial class QuickAgent : TriangleBoat
 {
     /// <summary>
     /// Maximum possible linear velocity
@@ -25,7 +25,6 @@ public class QuickAgent : TriangleBoat
     [Export] private int health_max = 10;
     [Export] private int flee_health_threshold = 4;
 
-    private Vector2 velocity = Vector2.Zero;
     private float angular_velocity = 0;
     private float linear_drag = 0.1f;
     private float angular_drag = 0.1f;
@@ -71,7 +70,7 @@ public class QuickAgent : TriangleBoat
     {
         base._Ready();
         var player = Owner.GetNode<QuickPlayer>("QuickPlayer");
-        player.Connect("RestartQuickDemo", this, nameof(_on_restart));
+        //player.RestartQuickDemoEventHandler += _on_restart;
         restart_pos = GlobalPosition;
 
         // ---------- Initialization for our agent ----------
@@ -87,8 +86,8 @@ public class QuickAgent : TriangleBoat
         // ---------- Configuration for our agent ----------
         agent.LinearSpeedMax = speed_max;
         agent.LinearAccelerationMax = acceleration_max;
-        agent.AngularSpeedMax = Mathf.Deg2Rad(angular_speed_max);
-        agent.AngularAccelerationMax = Mathf.Deg2Rad(angular_accel_max);
+        agent.AngularSpeedMax = Mathf.DegToRad(angular_speed_max);
+        agent.AngularAccelerationMax = Mathf.DegToRad(angular_accel_max);
         agent.BoundingRadius = calculate_radius(GetNode<CollisionPolygon2D>("CollisionPolygon2D"));
         update_agent();
 
@@ -112,17 +111,17 @@ public class QuickAgent : TriangleBoat
 
         // We use deg2rad because the math in the toolkit assumes radians.
         // How close for the agent to be 'aligned', if not exact.
-        face.AlignmentTolerance = Mathf.Deg2Rad(0.5f);
+        face.AlignmentTolerance = Mathf.DegToRad(0.5f);
         // When to start slowing down
-        face.DecelerationRadius = Mathf.Deg2Rad(60);
+        face.DecelerationRadius = Mathf.DegToRad(60);
 
         // LookWhereYouGo turns the agent to keep looking towards its direction of travel.
         // It will only be enabled while the agent is at low health.
         var look = new GSAILookWhereYouGo(agent);
         // How close for the agent to be 'aligned', if not exact
-        look.AlignmentTolerance = Mathf.Deg2Rad(0.5f);
+        look.AlignmentTolerance = Mathf.DegToRad(0.5f);
         // When to start slowing down
-        look.DecelerationRadius = Mathf.Deg2Rad(60);
+        look.DecelerationRadius = Mathf.DegToRad(60);
 
         // Behaviors that are not enabled produce 0 acceleration.
         // Adding our fleeing behaviors to a blend. The order does not matter.
@@ -142,8 +141,9 @@ public class QuickAgent : TriangleBoat
         priority.Add(pursue_blend);
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double _delta)
     {
+        float delta = (float) _delta;
         // Make sure any change in position and speed has been recorded.
         update_agent();
 
@@ -158,14 +158,14 @@ public class QuickAgent : TriangleBoat
 
         // We add the discovered acceleration to our linear velocity. The toolkit does not limit
         // velocity, just acceleration, so we clamp the result ourselves here.
-        velocity = (velocity + GSAIUtils.ToVector2(acceleration.Linear) * delta).Clamped(agent.LinearSpeedMax);
+        Velocity = (Velocity + GSAIUtils.ToVector2(acceleration.Linear) * delta).LimitLength(agent.LinearSpeedMax);
 
         // This applies drag on the agent's motion, helping it to slow down naturally.
-        velocity = velocity.LinearInterpolate(Vector2.Zero, linear_drag);
+        Velocity = Velocity.Lerp(Vector2.Zero, linear_drag);
 
         // And since we're using a KinematicBody2D, we use Godot's excellent move_and_slide to actually
         // apply the final movement, and record any change in velocity the physics engine discovered.
-        velocity = MoveAndSlide(velocity);
+        MoveAndSlide();
 
         // We then do something similar to apply our agent's rotational speed.
         angular_velocity = Mathf.Clamp(angular_velocity + acceleration.Angular * delta,
@@ -184,7 +184,7 @@ public class QuickAgent : TriangleBoat
     {
         agent.Position = GSAIUtils.ToVector3(GlobalPosition);
         agent.Orientation = Rotation;
-        agent.LinearVelocity = GSAIUtils.ToVector3(velocity);
+        agent.LinearVelocity = GSAIUtils.ToVector3(Velocity);
         agent.AngularVelocity = angular_velocity;
     }
 
@@ -199,10 +199,10 @@ public class QuickAgent : TriangleBoat
         var furthest_point = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
         foreach (Vector2 p in collision.Polygon)
         {
-            if (Mathf.Abs(p.x) > furthest_point.x)
-                furthest_point.x = p.x;
-            if (Mathf.Abs(p.y) < furthest_point.y)
-                furthest_point.y = p.y;
+            if (Mathf.Abs(p.X) > furthest_point.X)
+                furthest_point.X = p.X;
+            if (Mathf.Abs(p.Y) < furthest_point.Y)
+                furthest_point.Y = p.Y;
         }
         return furthest_point.Length();
     }

@@ -3,10 +3,10 @@
 [ext_resource path="res://Demos/Utils/DrawBoundaries.cs" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 10, 549.992 )
+size = Vector2( 10, 549.992 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 970, 10 )
+size = Vector2( 970, 10 )
 
 [node name="Boundaries" type="Node2D"]
 script = ExtResource( 1 )

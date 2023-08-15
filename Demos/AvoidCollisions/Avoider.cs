@@ -3,7 +3,7 @@ using System;
 using GodotSteeringAI;
 using System.Collections.Generic;
 
-public class Avoider : KinematicBody2D
+public partial class Avoider : CharacterBody2D
 {
     private static Random random = new Random();
 
@@ -50,15 +50,15 @@ public class Avoider : KinematicBody2D
         }
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         var pos = target.Position;
-        pos.x = agent.Position.x + _direction.x * _radius;
-        pos.y = agent.Position.y + _direction.y * _radius;
+        pos.X = agent.Position.X + _direction.X * _radius;
+        pos.Y = agent.Position.Y + _direction.Y * _radius;
         target.Position = pos;
 
         priority.CalculateSteering(_accel);
-        agent._ApplySteering(_accel, delta);
+        agent._ApplySteering(_accel, (float) delta);
     }
 
     public void Setup(
@@ -98,8 +98,8 @@ public class Avoider : KinematicBody2D
             tries_max--;
             
             var pos = GlobalPosition;
-            pos.x = GetRand(distance_from_boundary_min, _boundary_right - distance_from_boundary_min);
-            pos.y = GetRand(distance_from_boundary_min, _boundary_bottom - distance_from_boundary_min);
+            pos.X = GetRand(distance_from_boundary_min, _boundary_right - distance_from_boundary_min);
+            pos.Y = GetRand(distance_from_boundary_min, _boundary_bottom - distance_from_boundary_min);
             GlobalPosition = pos;
 
             var done = true;

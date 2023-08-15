@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class Turret : KinematicBody2D
+public partial class Turret : CharacterBody2D
 {
     [Export] private float align_tolerance = 0.5f;
     [Export] private float deceleration_radius = 135;
@@ -25,18 +25,18 @@ public class Turret : KinematicBody2D
         face = new GSAIFace(agent, target);
         accel = new GSAITargetAcceleration();
 
-        face.AlignmentTolerance = Mathf.Deg2Rad(align_tolerance);
-        face.DecelerationRadius = Mathf.Deg2Rad(deceleration_radius);
+        face.AlignmentTolerance = Mathf.DegToRad(align_tolerance);
+        face.DecelerationRadius = Mathf.DegToRad(deceleration_radius);
 
         agent.AngularAccelerationMax = angular_accel_max;
         agent.AngularSpeedMax = angular_speed_max;
         agent.AngularDragPercentage = angular_drag;
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         target.Position = GSAIUtils.ToVector3(target_node.GlobalPosition);
         face.CalculateSteering(accel);
-        agent._ApplySteering(accel, delta);
+        agent._ApplySteering(accel, (float) delta);
     }
 }

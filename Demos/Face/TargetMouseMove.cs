@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TargetMouseMove : Node2D
+public partial class TargetMouseMove : Node2D
 {
     public override void _UnhandledInput(InputEvent evt)
     {

@@ -1,24 +1,25 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://mxajo0wxy1eo"]
 
-[ext_resource path="res://Demos/Utils/Background.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Demos/AvoidCollisions/Spawner.cs" type="Script" id=2]
-[ext_resource path="res://Demos/AvoidCollisions/Avoider.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Demos/Utils/SceneDesc.tscn" type="PackedScene" id=4]
+[ext_resource type="PackedScene" path="res://Demos/Utils/Background.tscn" id="1"]
+[ext_resource type="Script" path="res://Demos/AvoidCollisions/Spawner.cs" id="2"]
+[ext_resource type="PackedScene" uid="uid://fp6sjepuuhxv" path="res://Demos/AvoidCollisions/Avoider.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Demos/Utils/SceneDesc.tscn" id="4"]
 
 [node name="AvoidCollisionsDemo" type="Node"]
 
-[node name="Background" parent="." instance=ExtResource( 1 )]
+[node name="Background" parent="." instance=ExtResource("1")]
 
 [node name="Spawner" type="Node2D" parent="."]
-script = ExtResource( 2 )
+script = ExtResource("2")
 linear_speed_max = 2700.0
 linear_acceleration_max = 2150.0
 proximity_radius = 150.0
-avoider_template = ExtResource( 3 )
-inner_color = Color( 0.235294, 0.639216, 0.439216, 1 )
-outer_color = Color( 0.560784, 0.870588, 0.364706, 1 )
+avoider_template = ExtResource("3")
+inner_color = Color(0.235294, 0.639216, 0.439216, 1)
+outer_color = Color(0.560784, 0.870588, 0.364706, 1)
 
-[node name="SceneDesc" parent="." instance=ExtResource( 4 )]
-modulate = Color( 1, 1, 1, 0.564706 )
+[node name="SceneDesc" parent="." instance=ExtResource("4")]
+modulate = Color(1, 1, 1, 0.564706)
+anchors_preset = 10
 Description = "Avoid Collisions Demo
 Watch each agent try to keep traveling in a particular direction, but prioritize avoiding collisions with other agents."

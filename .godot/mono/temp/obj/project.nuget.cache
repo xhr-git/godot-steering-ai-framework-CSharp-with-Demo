@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "PiY/ttFLAHf10ZCV/H2rVJfjnoqgJYE1/obp9XXsx5XrhaF68iZTGIyXIcVWsXZRWlhR3ibgrA5dqt9I96gsTg==",
+  "success": true,
+  "projectFilePath": "E:\\Documents\\Godot\\godot-steering-ai-framework-csharp\\GodotSteeringAI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jalen\\.nuget\\packages\\godot.sourcegenerators\\4.1.1\\godot.sourcegenerators.4.1.1.nupkg.sha512",
+    "C:\\Users\\Jalen\\.nuget\\packages\\godotsharp\\4.1.1\\godotsharp.4.1.1.nupkg.sha512",
+    "C:\\Users\\Jalen\\.nuget\\packages\\godotsharpeditor\\4.1.1\\godotsharpeditor.4.1.1.nupkg.sha512",
+    "C:\\Users\\Jalen\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.21\\microsoft.netcore.app.ref.6.0.21.nupkg.sha512",
+    "C:\\Users\\Jalen\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.21\\microsoft.windowsdesktop.app.ref.6.0.21.nupkg.sha512",
+    "C:\\Users\\Jalen\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.21\\microsoft.aspnetcore.app.ref.6.0.21.nupkg.sha512"
+  ],
+  "logs": []
+}

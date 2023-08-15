@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class Arriver : KinematicBody
+public partial class Arriver : CharacterBody3D
 {
     [Export] private float linear_speed_max = 50;
     [Export] private float linear_acceleration_max = 50;
@@ -20,11 +20,11 @@ public class Arriver : KinematicBody
     private GSAIFace face;
     private GSAIArrive arrive;
 
-    private Spatial target_node;
+    private Node3D target_node;
 
     public override void _Ready()
     {
-        target_node = GetNode<Spatial>("../MouseTarget");
+        target_node = GetNode<Node3D>("../MouseTarget");
         agent = new GSAIKinematicBody3DAgent(this);
         target = new GSAIAgentLocation();
         accel = new GSAITargetAcceleration();
@@ -43,20 +43,20 @@ public class Arriver : KinematicBody
         arrive.ArrivalTolerance = arrival_tolerance;
         arrive.DecelerationRadius = deceleration_radius;
 
-        face.AlignmentTolerance = Mathf.Deg2Rad(align_tolerance);
-        face.DecelerationRadius = Mathf.Deg2Rad(angular_deceleration_radius);
+        face.AlignmentTolerance = Mathf.DegToRad(align_tolerance);
+        face.DecelerationRadius = Mathf.DegToRad(angular_deceleration_radius);
 
-        target.Position = target_node.Transform.origin;
+        target.Position = target_node.Transform.Origin;
         blend.Add(arrive, 1);
         blend.Add(face, 1);
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
-        var pos = target_node.Transform.origin;
-        pos.y = Transform.origin.y;
+        var pos = target_node.Transform.Origin;
+        pos.Y = Transform.Origin.Y;
         target.Position = pos;
         blend.CalculateSteering(accel);
-        agent._ApplySteering(accel, delta);
+        agent._ApplySteering(accel, (float) delta);
     }
 }

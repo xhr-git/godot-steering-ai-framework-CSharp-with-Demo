@@ -5,7 +5,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
 
-[node name="Bullet" type="KinematicBody2D"]
+[node name="Bullet" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 8
 script = ExtResource( 1 )
