@@ -1,0 +1,3 @@
+[submodule "GSAI"]
+	path = GSAI
+	url = https://github.com/wadlo/godot-steering-ai-framework-submodule-csharp.git
