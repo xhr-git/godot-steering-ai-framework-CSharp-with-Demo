@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class PlayerWithAgent : KinematicBody2D
+public partial class PlayerWithAgent : CharacterBody2D
 {
     private float speed = 600;
     public GSAIAgentLocation agent = new GSAIAgentLocation();
@@ -12,13 +12,14 @@ public class PlayerWithAgent : KinematicBody2D
         agent.Position = GSAIUtils.ToVector3(GlobalPosition);
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         var movement = _get_movement();
         if (movement.LengthSquared() < 0.01f)
             return;
 
-        var ret = MoveAndSlide(movement * speed);
+        Velocity = movement * speed;
+        MoveAndSlide();
         agent.Position = GSAIUtils.ToVector3(GlobalPosition);
     }
 

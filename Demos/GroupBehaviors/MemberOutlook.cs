@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class MemberOutlook : CollisionShape2D
+public partial class MemberOutlook : CollisionShape2D
 {
 
     [Export] public Color inner_color = new Color(0, 0, 0);
@@ -12,7 +12,7 @@ public class MemberOutlook : CollisionShape2D
     {
         inner_color = inner;
         outer_color = outer;
-        Update();
+        QueueRedraw();
     }
 
     public override void _Draw()

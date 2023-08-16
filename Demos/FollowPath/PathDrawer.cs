@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class PathDrawer : Node2D
+public partial class PathDrawer : Node2D
 {
     public delegate void PathEstablished(List<Vector2> points);
     public PathEstablished PathEstablishedSignal { get; set; }
@@ -19,19 +19,19 @@ public class PathDrawer : Node2D
             if (is_drawing)
             {
                 active_points.Add(mouseMove.Position);
-                Update();
+                QueueRedraw();
             }
         }
         else if (evt is InputEventMouseButton mouseBtn)
         {
             if (mouseBtn.Pressed)
             {
-                if (mouseBtn.ButtonIndex == (int)ButtonList.Left)
+                if (mouseBtn.ButtonIndex == MouseButton.Left)
                 {
                     is_drawing = true;
                     active_points.Clear();
                     active_points.Add(mouseBtn.Position);
-                    Update();
+                    QueueRedraw();
                 }
             }
             else
@@ -49,14 +49,14 @@ public class PathDrawer : Node2D
         {
             foreach (var point in active_points)
             {
-                DrawCircle(point, 2, Color.ColorN("red"));
+                DrawCircle(point, 2, new Color("RED"));
             }
         }
         else if (active_points.Count > 0)
         {
-            DrawCircle(active_points[0], 5, Color.ColorN("red"));
-            DrawCircle(active_points[active_points.Count - 1], 5, Color.ColorN("yellow"));
-            DrawPolyline(active_points.ToArray(), Color.ColorN("skyblue"), 2);
+            DrawCircle(active_points[0], 5, new Color("RED"));
+            DrawCircle(active_points[active_points.Count - 1], 5, new Color("YELLOW"));
+            DrawPolyline(active_points.ToArray(), new Color("SKY_BLUE"), 2);
         }
     }
 
@@ -81,7 +81,7 @@ public class PathDrawer : Node2D
         active_points = t;
         if (active_points[active_points.Count - 1] != last)
             active_points.Add(last);
-        Update();
+        QueueRedraw();
         PathEstablishedSignal?.Invoke(active_points);
     }
 }

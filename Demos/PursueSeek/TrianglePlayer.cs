@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class TrianglePlayer : TriangleBoat
+public partial class TrianglePlayer : TriangleBoat
 {
     [Export] private float thruster_strength = 1000;
     [Export] private float side_thruster_strength = 40;
@@ -11,7 +11,6 @@ public class TrianglePlayer : TriangleBoat
     [Export] private float angular_drag = 0.025f;
     [Export] private float linear_drag = 0.025f;
 
-    private Vector2 _linear_velocity = Vector2.Zero;
     private float _angular_velocity = 0;
     public GSAISteeringAgent agent = new GSAISteeringAgent();
 
@@ -20,19 +19,20 @@ public class TrianglePlayer : TriangleBoat
         base._Ready(); GD.Print("player");
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double _delta)
     {
+        float delta = (float) _delta;
         var movement = _get_movement();
         _angular_velocity = _calculate_angular_velocity(
-            movement.x, _angular_velocity, side_thruster_strength,
+            movement.X, _angular_velocity, side_thruster_strength,
             angular_velocity_max, angular_drag, delta);
         Rotation += _angular_velocity * delta;
 
-        _linear_velocity = _calculate_linear_velocity(
-            movement.y, _linear_velocity, Vector2.Up.Rotated(Rotation),
+        Velocity = _calculate_linear_velocity(
+            movement.Y, Velocity, Vector2.Up.Rotated(Rotation),
             linear_drag, thruster_strength, velocity_max, delta);
 
-        _linear_velocity = MoveAndSlide(_linear_velocity);
+        MoveAndSlide();
         _update_agent();
     }
 
@@ -40,13 +40,13 @@ public class TrianglePlayer : TriangleBoat
                                               float _thruster_strength, float _velocity_max,
                                               float ship_drag, float delta)
     {
-        var velocity = Mathf.Clamp(
+        var angularVelocity = Mathf.Clamp(
             current_velocity + _thruster_strength * horizontal_movement * delta,
             -_velocity_max, _velocity_max);
 
-        velocity = Mathf.Lerp(velocity, 0, ship_drag);
+        angularVelocity = Mathf.Lerp(angularVelocity, 0, ship_drag);
 
-        return velocity;
+        return angularVelocity;
     }
 
     private Vector2 _calculate_linear_velocity(float vertical_movement, Vector2 current_velocity,
@@ -59,10 +59,10 @@ public class TrianglePlayer : TriangleBoat
         else if (vertical_movement < 0)
             actual_strength = -strength / 1.5f;
 
-        var velocity = current_velocity + facing_direction * actual_strength * delta;
-        velocity = velocity.LinearInterpolate(Vector2.Zero, ship_drag_coefficient);
+        var linearVelocity = current_velocity + facing_direction * actual_strength * delta;
+        linearVelocity = linearVelocity.Lerp(Vector2.Zero, ship_drag_coefficient);
 
-        return velocity.Clamped(speed_max);
+        return linearVelocity.LimitLength(speed_max);
     }
 
     private Vector2 _get_movement()
@@ -76,7 +76,7 @@ public class TrianglePlayer : TriangleBoat
     private void _update_agent()
     {
         agent.Position = GSAIUtils.ToVector3(GlobalPosition);
-        agent.LinearVelocity = GSAIUtils.ToVector3(_linear_velocity);
+        agent.LinearVelocity = GSAIUtils.ToVector3(Velocity);
         agent.AngularVelocity = _angular_velocity;
         agent.Orientation = Rotation;
     }

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class PlayerOutlook : CollisionShape2D
+public partial class PlayerOutlook : CollisionShape2D
 {
     [Export] private float Stroke = 6;
     [Export] public Color InnerColor = new Color(0.235294f, 0.639216f, 0.439216f);

@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class Seeker : KinematicBody2D
+public partial class Seeker : CharacterBody2D
 {
     public GSAIAgentLocation player_agent;
     public float start_speed;
@@ -25,7 +25,7 @@ public class Seeker : KinematicBody2D
         flee = new GSAIFlee(agent, player_agent);
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (player_agent is null)
             return;
@@ -34,6 +34,6 @@ public class Seeker : KinematicBody2D
         else
             flee.CalculateSteering(accel);
 
-        agent._ApplySteering(accel, delta);
+        agent._ApplySteering(accel, (float) delta);
     }
 }

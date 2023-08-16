@@ -3,7 +3,7 @@ using System;
 using GodotSteeringAI;
 using System.Collections.Generic;
 
-public class Member : KinematicBody2D
+public partial class Member : CharacterBody2D
 {
     private static Random random = new Random();
 
@@ -56,12 +56,12 @@ public class Member : KinematicBody2D
         blend.Add(cohesion, cohesion_strength);
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (blend is null)
             return;
         blend.CalculateSteering(acceleration);
-        agent._ApplySteering(acceleration, delta);
+        agent._ApplySteering(acceleration, (float) delta);
     }
 
     public void SetNeighbors(List<GSAISteeringAgent> neighbor)

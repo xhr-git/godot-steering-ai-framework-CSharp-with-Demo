@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class SeekerSpawner : Node2D
+public partial class SeekerSpawner : Node2D
 {
     enum SeekMode
     {
@@ -24,15 +24,15 @@ public class SeekerSpawner : Node2D
         player = Owner.GetNode<PlayerWithAgent>("Player");
         camera_boundaries = new Rect2(
             Vector2.Zero, new Vector2(
-                (float)(ProjectSettings.GetSetting("display/window/size/width") as int?),
-                (float)(ProjectSettings.GetSetting("display/window/size/height") as int?)));
+                ProjectSettings.GetSetting("display/window/size/width").As<float>(),
+                ProjectSettings.GetSetting("display/window/size/height").As<float>()));
         var rng = new Random();
         for (int i = 0; i < entity_count; i++)
         {
             var pos = new Vector2(
-                rng.Next(20, (int)camera_boundaries.Size.x - 40),
-                rng.Next(20, (int)camera_boundaries.Size.y - 40));
-            var entity = Entity.Instance() as Seeker;
+                rng.Next(20, (int)camera_boundaries.Size.X - 40),
+                rng.Next(20, (int)camera_boundaries.Size.Y - 40));
+            var entity = Entity.Instantiate() as Seeker;
             entity.GlobalPosition = pos;
             entity.player_agent = player.agent;
             entity.start_speed = linear_speed_max;
@@ -42,7 +42,7 @@ public class SeekerSpawner : Node2D
         }
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (Input.IsActionJustPressed("switch_mode"))
         {
@@ -57,8 +57,8 @@ public class SeekerSpawner : Node2D
             foreach (Seeker e in GetChildren())
             {
                 e.GlobalPosition = new Vector2(
-                    rng.Next(20, (int)camera_boundaries.Size.x - 40),
-                    rng.Next(20, (int)camera_boundaries.Size.y - 40));
+                    rng.Next(20, (int)camera_boundaries.Size.X - 40),
+                    rng.Next(20, (int)camera_boundaries.Size.Y - 40));
             }
         }
     }

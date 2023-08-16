@@ -1,82 +1,70 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://b18ifc1o7oggi"]
 
-[ext_resource path="res://Demos/Arrive3d/Arrive3dDemo.cs" type="Script" id=1]
-[ext_resource path="res://Demos/Arrive3d/Arriver.cs" type="Script" id=2]
-[ext_resource path="res://Demos/Utils/SceneDesc.tscn" type="PackedScene" id=3]
+[ext_resource type="Script" path="res://Demos/Arrive3d/Arrive3dDemo.cs" id="1"]
+[ext_resource type="Script" path="res://Demos/Arrive3d/Arriver.cs" id="2"]
+[ext_resource type="PackedScene" path="res://Demos/Utils/SceneDesc.tscn" id="3"]
 
-[sub_resource type="PlaneMesh" id=1]
+[sub_resource type="PlaneMesh" id="1"]
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.0941176, 0.235294, 0.486275, 1 )
+[sub_resource type="BoxShape3D" id="3"]
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="CapsuleShape3D" id="4"]
 
-[sub_resource type="CapsuleShape" id=4]
+[sub_resource type="CapsuleMesh" id="5"]
 
-[sub_resource type="CapsuleMesh" id=5]
+[sub_resource type="BoxMesh" id="7"]
 
-[sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.152941, 0.764706, 0.247059, 1 )
-
-[sub_resource type="CubeMesh" id=7]
-
-[sub_resource type="CylinderMesh" id=8]
-
-[sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.945098, 0.85098, 0.0745098, 1 )
+[sub_resource type="CylinderMesh" id="8"]
 
 [node name="Arrive3dDemo" type="Node"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
-[node name="Ground" type="MeshInstance" parent="."]
-transform = Transform( 272.536, 0, 0, 0, 1, 0, 0, 0, 272.536, 0, 0, 0 )
-mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(272.536, 0, 0, 0, 1, 0, 0, 0, 272.536, 0, 0, 0)
+mesh = SubResource("1")
 
-[node name="StaticBody" type="StaticBody" parent="Ground"]
-transform = Transform( 0.00366924, 0, 0, 0, 1, 0, 0, 0, 0.00366924, 0, 0, 0 )
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(0.00366924, 0, 0, 0, 1, 0, 0, 0, 0.00366924, 0, 0, 0)
 
-[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
-transform = Transform( 270.816, 0, 0, 0, 0.1, 0, 0, 0, 270.816, 0, 0, 0 )
-shape = SubResource( 3 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+transform = Transform3D(270.816, 0, 0, 0, 0.1, 0, 0, 0, 270.816, 0, 0, 0)
+shape = SubResource("3")
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.989771, 0.06892, -0.124912, 0.0376473, 0.718354, 0.694658, 0.137607, -0.692255, 0.708411, -7.5, 14, 25.5 )
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.989771, 0.06892, -0.124912, 0.0376473, 0.718354, 0.694658, 0.137607, -0.692255, 0.708411, -7.5, 14, 25.5)
 current = true
 
-[node name="RayCast" type="RayCast" parent="Camera"]
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 
-[node name="Arriver" type="KinematicBody" parent="."]
+[node name="Arriver" type="CharacterBody3D" parent="."]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource( 2 )
+script = ExtResource("2")
 
-[node name="CollisionShape" type="CollisionShape" parent="Arriver"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.5, 0 )
-shape = SubResource( 4 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arriver"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.5, 0)
+shape = SubResource("4")
 
-[node name="Capsule" type="MeshInstance" parent="Arriver"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.5, 0 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+[node name="Capsule" type="MeshInstance3D" parent="Arriver"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.5, 0)
+mesh = SubResource("5")
 
-[node name="Nose" type="MeshInstance" parent="Arriver"]
-transform = Transform( 0.15, 0, 0, 0, 0.2, 0, 0, 0, 0.4, 0, 2, 1.25 )
-mesh = SubResource( 7 )
-material/0 = SubResource( 6 )
+[node name="Nose" type="MeshInstance3D" parent="Arriver"]
+transform = Transform3D(0.15, 0, 0, 0, 0.2, 0, 0, 0, 0.4, 0, 2, 1.25)
+mesh = SubResource("7")
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -0.536337, 0.521752, -0.663414, -0.836516, -0.224144, 0.5, 0.112176, 0.823125, 0.55667, 0, 100, 0 )
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.536337, 0.521752, -0.663414, -0.836516, -0.224144, 0.5, 0.112176, 0.823125, 0.55667, 0, 100, 0)
 light_energy = 0.5
 shadow_enabled = true
 
-[node name="MouseTarget" type="Spatial" parent="."]
+[node name="MouseTarget" type="Node3D" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="MouseTarget"]
-transform = Transform( 2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MouseTarget"]
+transform = Transform3D(2, 0, 0, 0, 0.05, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("8")
 
-[node name="SceneDesc" parent="." instance=ExtResource( 3 )]
+[node name="SceneDesc" parent="." instance=ExtResource("3")]
+anchors_preset = 10
 Description = "3D Arrive Demo
 Move the mouse about the field to have the agent turn towards and smoothly arrive at the target marker."

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TriangleSeeker : TriangleBoat
+public partial class TriangleSeeker : TriangleBoat
 {
     // Declare member variables here. Examples:
     // private int a = 2;

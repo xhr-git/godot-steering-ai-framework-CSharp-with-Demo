@@ -2,9 +2,9 @@ using Godot;
 using System;
 using GodotSteeringAI;
 
-public class QuickPlayer : TriangleBoat
+public partial class QuickPlayer : TriangleBoat
 {
-    [Signal] delegate void RestartQuickDemo();
+    [Signal] public delegate void RestartQuickDemoEventHandler();
 
     [Export] private float speed_max = 750;
     [Export] private float acceleration_max = 4200;
@@ -12,7 +12,6 @@ public class QuickPlayer : TriangleBoat
     [Export] private float rotation_accel_max = 1280;
     [Export] private PackedScene BulletScene;
 
-    private Vector2 velocity = Vector2.Zero;
     private float angular_velocity = 0;
     private Vector2 direction = Vector2.Right;
 
@@ -33,23 +32,24 @@ public class QuickPlayer : TriangleBoat
 
         agent.LinearSpeedMax = speed_max;
         agent.LinearAccelerationMax = acceleration_max;
-        agent.AngularSpeedMax = Mathf.Deg2Rad(rotation_speed_max);
-        agent.AngularAccelerationMax = Mathf.Deg2Rad(rotation_accel_max);
+        agent.AngularSpeedMax = Mathf.DegToRad(rotation_speed_max);
+        agent.AngularAccelerationMax = Mathf.DegToRad(rotation_accel_max);
         agent.BoundingRadius = calculate_radius(GetNode<CollisionPolygon2D>("CollisionPolygon2D"));
         update_agent();
 
         proxy_target.Position = GSAIUtils.ToVector3(GetGlobalMousePosition());
 
-        face.AlignmentTolerance = Mathf.Deg2Rad(0.5f);
-        face.DecelerationRadius = Mathf.Deg2Rad(45);
+        face.AlignmentTolerance = Mathf.DegToRad(0.5f);
+        face.DecelerationRadius = Mathf.DegToRad(45);
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double _delta)
     {
+        float delta = (float) _delta;
         // Check whether to restart
         if (Input.IsActionJustPressed("switch_mode"))
         {
-            EmitSignal("RestartQuickDemo");
+            EmitSignal(SignalName.RestartQuickDemo);
             return;
         }
 
@@ -59,10 +59,10 @@ public class QuickPlayer : TriangleBoat
 
         direction = GSAIUtils.AngleToVector2(Rotation);
 
-        velocity += direction * acceleration_max * movement * delta;
-        velocity = velocity.Clamped(speed_max);
-        velocity = velocity.LinearInterpolate(Vector2.Zero, 0.1f);
-        velocity = MoveAndSlide(velocity);
+        Velocity += direction * acceleration_max * movement * delta;
+        Velocity = Velocity.LimitLength(speed_max);
+        Velocity = Velocity.Lerp(Vector2.Zero, 0.1f);
+        MoveAndSlide();
 
         face.CalculateSteering(accel);
         angular_velocity += accel.Angular * delta;
@@ -79,9 +79,9 @@ public class QuickPlayer : TriangleBoat
         }
         else if (evt is InputEventMouseButton btn)
         {
-            if (btn.ButtonIndex == (int)ButtonList.Left && evt.IsPressed())
+            if (btn.ButtonIndex == MouseButton.Left && evt.IsPressed())
             {
-                var bullet = BulletScene.Instance() as Bullet;
+                var bullet = BulletScene.Instantiate<Bullet>();
                 bullet.GlobalPosition = GlobalPosition - direction * (agent.BoundingRadius - 5);
                 bullet.Start(-direction);
                 bulletNode.AddChild(bullet);
@@ -93,7 +93,7 @@ public class QuickPlayer : TriangleBoat
     {
         agent.Position = GSAIUtils.ToVector3(GlobalPosition);
         agent.Orientation = Rotation;
-        agent.LinearVelocity = GSAIUtils.ToVector3(velocity);
+        agent.LinearVelocity = GSAIUtils.ToVector3(Velocity);
         agent.AngularVelocity = angular_velocity;
     }
 
@@ -102,10 +102,10 @@ public class QuickPlayer : TriangleBoat
         var furthest_point = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
         foreach (Vector2 p in collision.Polygon)
         {
-            if (Mathf.Abs(p.x) > furthest_point.x)
-                furthest_point.x = p.x;
-            if (Mathf.Abs(p.y) < furthest_point.y)
-                furthest_point.y = p.y;
+            if (Mathf.Abs(p.X) > furthest_point.X)
+                furthest_point.X = p.X;
+            if (Mathf.Abs(p.Y) < furthest_point.Y)
+                furthest_point.Y = p.Y;
         }
         return furthest_point.Length();
     }

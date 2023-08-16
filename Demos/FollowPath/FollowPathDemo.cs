@@ -4,7 +4,7 @@ using GodotSteeringAI;
 using System.Collections.Generic;
 using Godot.Collections;
 
-public class FollowPathDemo : Node
+public partial class FollowPathDemo : Node
 {
     [Export] private float linear_speed_max = 920;
     [Export] private float linear_acceleration_max = 3740;
@@ -13,11 +13,11 @@ public class FollowPathDemo : Node
     [Export] private float predict_time = 0.3f;
     [Export] private float path_offset = 20;
 
-    private KinematicBody2D pathFollower;
+    private CharacterBody2D pathFollower;
     public override void _Ready()
     {
         var drawer = GetNode<PathDrawer>("PathDrawer");
-        pathFollower = GetNode<KinematicBody2D>("PathFollower");
+        pathFollower = GetNode<CharacterBody2D>("PathFollower");
         agent = new GSAIKinematicBody2DAgent(pathFollower);
         _accel = new GSAITargetAcceleration();
         path = new GSAIPath(new List<Vector3>(new Vector3[] {Vector3.Zero, Vector3.Zero}), true);
@@ -42,12 +42,12 @@ public class FollowPathDemo : Node
     private GSAIFollowPath follow;
     private GSAIPath path;
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (_valid)
         {
             follow.CalculateSteering(_accel);
-            agent._ApplySteering(_accel, delta);
+            agent._ApplySteering(_accel, (float) delta);
         }
     }
 

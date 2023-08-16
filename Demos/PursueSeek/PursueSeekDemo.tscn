@@ -1,44 +1,58 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://b1e1d7807jn1k"]
 
-[ext_resource path="res://Demos/Utils/TriangleBoat.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Demos/Utils/BoundaryManager.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Demos/Utils/Background.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Demos/Utils/SceneDesc.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Demos/PursueSeek/TrianglePlayer.cs" type="Script" id=5]
-[ext_resource path="res://Demos/PursueSeek/TrianglePursuer.cs" type="Script" id=6]
+[ext_resource type="PackedScene" path="res://Demos/Utils/TriangleBoat.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://Demos/Utils/BoundaryManager.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Demos/Utils/Background.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Demos/Utils/SceneDesc.tscn" id="4"]
+[ext_resource type="Script" path="res://Demos/PursueSeek/TrianglePlayer.cs" id="5"]
+[ext_resource type="Script" path="res://Demos/PursueSeek/TrianglePursuer.cs" id="6"]
 
 [node name="PursueVSSeekDemo" type="Node"]
 
-[node name="Background" parent="." instance=ExtResource( 3 )]
+[node name="Background" parent="." instance=ExtResource("3")]
 
-[node name="BoundaryManager" parent="." instance=ExtResource( 2 )]
+[node name="BoundaryManager" parent="." instance=ExtResource("2")]
 
-[node name="TrianglePlayer" parent="BoundaryManager" instance=ExtResource( 1 )]
-position = Vector2( 350, 600 )
+[node name="TrianglePlayer" parent="BoundaryManager" instance=ExtResource("1")]
+position = Vector2(350, 600)
 rotation = 1.5708
 collision_mask = 2
-script = ExtResource( 5 )
-inner_color = Color( 0.235294, 0.639216, 0.439216, 1 )
-outer_color = Color( 0.560784, 0.870588, 0.364706, 1 )
+script = ExtResource("5")
+thruster_strength = 1000.0
+side_thruster_strength = 40.0
+velocity_max = 650.0
+angular_velocity_max = 3.0
+angular_drag = 0.025
+linear_drag = 0.025
+inner_color = Color(0.235294, 0.639216, 0.439216, 1)
+outer_color = Color(0.560784, 0.870588, 0.364706, 1)
 
-[node name="TrianglePursuer" parent="BoundaryManager" instance=ExtResource( 1 )]
-position = Vector2( 1250, 300 )
+[node name="TrianglePursuer" parent="BoundaryManager" instance=ExtResource("1")]
+position = Vector2(1250, 300)
 rotation = 3.14159
 collision_layer = 2
-script = ExtResource( 6 )
-inner_color = Color( 0.890196, 0.411765, 0.337255, 1 )
-outer_color = Color( 1, 0.709804, 0.439216, 1 )
+script = ExtResource("6")
+use_seek = false
+predict_time = 1.0
+linear_speed_max = 1200.0
+linear_accel_max = 1040.0
+inner_color = Color(0.890196, 0.411765, 0.337255, 1)
+outer_color = Color(1, 0.709804, 0.439216, 1)
 
-[node name="TriangleSeeker" parent="BoundaryManager" instance=ExtResource( 1 )]
-position = Vector2( 1250, 900 )
+[node name="TriangleSeeker" parent="BoundaryManager" instance=ExtResource("1")]
+position = Vector2(1250, 900)
 collision_layer = 2
-script = ExtResource( 6 )
-inner_color = Color( 0.294118, 0.356863, 0.670588, 1 )
-outer_color = Color( 0.301961, 0.65098, 1, 1 )
+script = ExtResource("6")
 use_seek = true
+predict_time = 1.0
+linear_speed_max = 1200.0
+linear_accel_max = 1040.0
+inner_color = Color(0.294118, 0.356863, 0.670588, 1)
+outer_color = Color(0.301961, 0.65098, 1, 1)
 
-[node name="SceneDesc" parent="." instance=ExtResource( 4 )]
-modulate = Color( 1, 1, 1, 0.752941 )
-margin_bottom = 175.0
+[node name="SceneDesc" parent="." instance=ExtResource("4")]
+modulate = Color(1, 1, 1, 0.752941)
+anchors_preset = 10
+offset_bottom = 175.0
 Description = "Pursue vs. Seek Demo
 Move the player around with WASD and notice the [color=#ffb570]orange Pursuer[/color] and the [color=aqua]blue Seeker[/color] follow the [color=lime]green \"Ship\"[/color] around"

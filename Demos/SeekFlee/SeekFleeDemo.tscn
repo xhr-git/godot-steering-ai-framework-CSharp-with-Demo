@@ -23,7 +23,7 @@ Entity = ExtResource( 6 )
 
 [node name="SceneDesc" parent="." instance=ExtResource( 7 )]
 modulate = Color( 1, 1, 1, 0.752941 )
-margin_bottom = 175.0
+offset_bottom = 175.0
 Description = "Seek & Flee Demo
 Move the [color=lime]green \"Player\"[/color] around with WASD and notice the [color=#ffb570]orange \"Enemies\"[/color] try to seek to or flee from the player.
 Press [color=lime]\"Q\"[/color] to switch seek/flee mode, press [color=lime]\"E\"[/color] to re-randomize  [color=#ffb570]orange \"Enemies\"[/color]  position"
